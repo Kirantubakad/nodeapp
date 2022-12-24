@@ -1,5 +1,5 @@
 pipeline{
-    agent any
+    agent {label 'slave1'}
     environment{
         HUB_CREDENTIALS = crdentials('dockerhub-kiran')
     }
