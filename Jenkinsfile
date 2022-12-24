@@ -1,7 +1,7 @@
 pipeline{
     agent {label "slave1"}
     environment{
-        HUB_CREDENTIALS = credentials('dockerhub-kiran')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-kiran')
     }
     stages{
         stage('checkout scm'){
@@ -21,7 +21,7 @@ pipeline{
         }
         stage('loginto-hub'){
             steps{
-                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u -$DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
         stage('push image to hub'){
