@@ -6,7 +6,7 @@ pipeline{
     stages{
         stage('checkout scm'){
             steps{
-               git credentialsId: 'github_credential', poll: false, url: 'https://github.com/Kirantubakad/nodeapp.git''
+               git credentialsId: 'github_credential', poll: false, url: 'https://github.com/Kirantubakad/nodeapp.git'
             }
         }
         stage('build image'){
