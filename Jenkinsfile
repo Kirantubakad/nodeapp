@@ -1,12 +1,12 @@
 pipeline{
-    agent {label 'slave1'}
+    agent {label "slave1"}
     environment{
         HUB_CREDENTIALS = crdentials('dockerhub-kiran')
     }
     stages{
         stage('gitclone'){
             steps{
-                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github_credential', url: 'https://github.com/Kirantubakad/nodeapp.git']]]
+                git 'https://github.com/Kirantubakad/nodeapp.git'
             }
         }
         stage('build image'){
