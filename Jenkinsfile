@@ -1,7 +1,7 @@
 pipeline{
     agent {label "slave1"}
     environment{
-        HUB_CREDENTIALS = crdentials('dockerhub-kiran')
+        HUB_CREDENTIALS = credentials('dockerhub-kiran')
     }
     stages{
         stage('checkout scm'){
