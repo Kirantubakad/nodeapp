@@ -1,32 +1,36 @@
-pipeline {
-    agent any 
-    environment {
-    DOCKERHUB_CREDENTIALS = credentials('valaxy-dockerhub')
+pipeline{
+    agent any
+    environment{
+        HUB_CREDENTIALS = crdentials('dockerhub-kiran')
     }
-    stages { 
-        stage('SCM Checkout') {
+    stages{
+        stage('gitclone'){
             steps{
-            git 'https://github.com/ravdy/nodejs-demo.git'
+                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github_credential', url: 'https://github.com/Kirantubakad/nodeapp.git']]]
             }
         }
-
-        stage('Build docker image') {
-            steps {  
-                sh 'docker build -t valaxy/nodeapp:$BUILD_NUMBER .'
-            }
-        }
-        stage('login to dockerhub') {
+        stage('build image'){
             steps{
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh '''
+                  
+                  docker build -t daemon/nodeapp:$BUILD_NUMBER .
+                  docker tag daemon/nodeapp:$BUILD_NUMBER kirankumartubakad/pub_repo:$BUILD_NUMBER
+                  
+                  '''
             }
         }
-        stage('push image') {
+        stage('loginto-hub'){
             steps{
-                sh 'docker push valaxy/nodeapp:$BUILD_NUMBER'
+                 sh 'echo $HUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
-}
-post {
+        stage('push image to hub'){
+            steps{
+                 sh 'docker push kirankumartubakad/pub_repo:$BUILD_NUMBER'
+            }
+        }
+    }
+    post {
         always {
             sh 'docker logout'
         }
