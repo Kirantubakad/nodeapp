@@ -4,7 +4,7 @@ pipeline{
         HUB_CREDENTIALS = crdentials('dockerhub-kiran')
     }
     stages{
-        stage('gitclone'){
+        stage('checkout scm'){
             steps{
                 git 'https://github.com/Kirantubakad/nodeapp.git'
             }
